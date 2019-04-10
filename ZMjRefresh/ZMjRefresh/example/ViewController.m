@@ -34,6 +34,8 @@ static NSInteger const maxPage = 2;
     [self.view addSubview:self.tableView];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:cellIdentifier];
     self.tableView.dataSource= self;
+    self.tableView.imageName = @"cm_kong_icon";
+    self.tableView.emptyTitle = @"空空如也";
     __weak __typeof(&*self)weakSelf = self;
     [self.tableView addHeaderWithHeaderWithBeginRefresh:YES animation:YES refreshBlock:^(NSInteger pageIndex) {
         [weakSelf requestData:YES];
@@ -51,13 +53,16 @@ static NSInteger const maxPage = 2;
 
 
 - (void)requestData:(BOOL)isNeedClear {
-    if (isNeedClear) {
-        [self.dataArray removeAllObjects];
-    }
-    for (NSInteger i = 1; i <= 5; i++) {
-        [self.dataArray addObject:@(i)];
-    }
-    [self.tableView reloadData];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (isNeedClear) {
+            [self.dataArray removeAllObjects];
+        }
+        for (NSInteger i = 1; i <= 5; i++) {
+            [self.dataArray addObject:@(i)];
+        }
+        [self.tableView reloadData];
+    });
+
 }
 
 #pragma mark - UITableViewDataSource

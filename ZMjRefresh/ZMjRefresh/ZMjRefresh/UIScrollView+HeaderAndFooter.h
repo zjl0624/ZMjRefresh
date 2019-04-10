@@ -20,6 +20,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**上拉时候触发的block*/
 @property (nonatomic, copy) LoadMoreBlock loadMoreBlock;
 
+/**空页面的图片名称*/
+@property (strong, nonatomic) NSString *imageName;
+/**空页面的标题*/
+@property (strong, nonatomic) NSString *emptyTitle;
 
 - (void)addHeaderWithHeaderWithBeginRefresh:(BOOL)beginRefresh animation:(BOOL)animation refreshBlock:(void(^)(NSInteger pageIndex))refreshBlock;
 

@@ -8,6 +8,7 @@
 
 #import "UIScrollView+HeaderAndFooter.h"
 #import "MJRefresh.h"
+#import "LYEmptyViewHeader.h"
 @implementation UIScrollView (HeaderAndFooter)
 
 static void *pagaIndexKey = &pagaIndexKey;
@@ -40,6 +41,26 @@ static void *LoadMoreBlockKey = &LoadMoreBlockKey;
     return objc_getAssociatedObject(self, &LoadMoreBlockKey);
 }
 
+static void *imageNameKey = &imageNameKey;
+- (void)setImageName:(NSString *)imageName {
+    objc_setAssociatedObject(self, &imageNameKey, imageName, OBJC_ASSOCIATION_COPY);
+}
+
+- (NSString *)imageName
+{
+    return objc_getAssociatedObject(self, &imageNameKey);
+}
+
+static void *titleKey = &titleKey;
+- (void)setEmptyTitle:(NSString *)emptyTitle {
+    objc_setAssociatedObject(self, &titleKey, emptyTitle, OBJC_ASSOCIATION_COPY);
+}
+
+- (NSString *)emptyTitle
+{
+    return objc_getAssociatedObject(self, &titleKey);
+}
+
 
 - (void)addHeaderWithHeaderWithBeginRefresh:(BOOL)beginRefresh animation:(BOOL)animation refreshBlock:(void(^)(NSInteger pageIndex))refreshBlock{
     
@@ -65,6 +86,7 @@ static void *LoadMoreBlockKey = &LoadMoreBlockKey;
     
 //    header.mj_h = 70.0;
     self.mj_header = header;
+    self.ly_emptyView = [LYEmptyView emptyViewWithImage:[UIImage imageNamed:self.imageName] titleStr:self.emptyTitle detailStr:@""];
 }
 
 - (void)addFooterWithWithHeaderWithAutomaticallyRefresh:(BOOL)automaticallyRefresh loadMoreBlock:(void(^)(NSInteger pageIndex))loadMoreBlock{
